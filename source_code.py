@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
-lower_green = np.array([100,150,0])
-upper_green = np.array([140,255,255])
+lower_blue = np.array([100,150,0])
+upper_blue = np.array([140,255,255])
 I=cv2.imread('white.jpg')
 e=cv2.imread('E.jpg')
 fe=cv2.flip(e,1)
@@ -15,29 +15,27 @@ c=255
 cap=cv2.VideoCapture(0)
 while True:
     ret,frame=cap.read()
-    #frame[0:fe.shape[0],0:fe.shape[1]]=fe
-    #frame[fe.shape[0]+10:fe.shape[0]+fg.shape[0]+10,0:fg.shape[1]]=fg
-    #frame[fe.shape[0]+fg.shape[0]+10:fe.shape[0]+fg.shape[0]+10+fb.shape[0],0:fb.shape[1]]=fb
-    cv2.rectangle(frame,(0,0),(0+200,0+100),(255,255,255),5)
+   
+    cv2.rectangle(frame,(0,0),(0+200,0+100),(255,255,255),5)    #defining colour boxes at the top of frame
     cv2.rectangle(frame,(220,100),(220+200,0+100),(0,255,0),5)
     cv2.rectangle(frame,(440,100),(440+200,0+100),(0,0,0),5)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # define range of blue color in HSV
     # Threshold the HSV image to get only blue colors
-    mask = cv2.inRange(hsv,lower_green ,upper_green )
+    mask = cv2.inRange(hsv,lower_blue ,upper_blue )
     # Bitwise-AND mask and original image
     #res = cv2.bitwise_and(frame,frame, mask= mask)
-    kernel = np.ones((5,5),np.uint8)
+    kernel = np.ones((5,5),np.uint8)                                                           #morphological operations
     erosion=cv2.erode(mask, kernel, iterations =1)
     mask = cv2.dilate(mask,kernel,iterations = 1)
     
-    cnts=cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2]
+    cnts=cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2]                   #find shapes
     cv2.imshow('o/p1',mask)
-    rects = [cv2.boundingRect(ctr) for ctr in cnts]
+    rects = [cv2.boundingRect(ctr) for ctr in cnts]                          
     for rect in rects:
         
         if rect[2]>40 and rect[3]>40:
-           cv2.rectangle(frame,(rect[0],rect[1]),(rect[0]+rect[2],rect[1]+rect[3]),(255,0,0),2)
+           cv2.rectangle(frame,(rect[0],rect[1]),(rect[0]+rect[2],rect[1]+rect[3]),(255,0,0),2)           #draw rectangles on target object
            xc=int(rect[0]+rect[2]/2)
            yc=int(rect[1]+rect[2]/2)
            print(rect[0],rect[1],rect[2])
