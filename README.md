@@ -1,2 +1,3 @@
 # Virtual_Painting
 In painting applications, we can set a target object and that object is moved in front of the camera and corresponding paint is drawn on a white page.
+Considering the technical aspects of this project, initially the target object with which you want to draw has to be pre-defined and those specifications are fed as parameters for the project.I've designed for a blue colour object.The movement of that blue colour object infront of camera will lead to a sketch on a white page.The target object is found it has to be continuously tracked and based on the centroid movement the sketch varies. We can assign different colours by moving target object in boxes of pre-defined colours.
